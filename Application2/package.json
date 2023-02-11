@@ -1,0 +1,16 @@
+{
+  "name": "application2",
+  "version": "1.0.0",
+  "description": "Application2 for the technical task",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.0"
+  }
+}
