@@ -5,5 +5,21 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Application1.dataio.views.MainWindow"
         Title="Application1">
-    Welcome to Avalonia!
+        <Grid ColumnDefinitions="1*, 1*" RowDefinitions="Auto" Margin="5">
+                <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Client Id: AAAA-BBBB-CCCC-DDDD"/>
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
+                                <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0"/>
+                                <Button Content="Send" Grid.Row="0" Grid.Column="1"/>
+                        </Grid>
+                        <StackPanel Spacing="10">
+                                <TextBlock Text="Inputs send:"/>
+                                <ListBox />
+                        </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" Spacing="10">
+                        <TextBlock Text="Outputs Received:"/>
+                        <ListBox />
+                </StackPanel>
+        </Grid>
 </Window>
