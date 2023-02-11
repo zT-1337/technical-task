@@ -7,7 +7,7 @@
         Title="Application1">
         <Grid ColumnDefinitions="1*, 1*" RowDefinitions="Auto" Margin="5">
                 <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="Client Id: AAAA-BBBB-CCCC-DDDD"/>
+                        <TextBlock Text="{Binding ClientId}"/>
                         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
                                 <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0"/>
                                 <Button Content="Send" Grid.Row="0" Grid.Column="1"/>

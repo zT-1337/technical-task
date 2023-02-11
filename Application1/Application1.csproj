@@ -31,6 +31,5 @@
 
   <ItemGroup>
     <Folder Include="dataio\models" />
-    <Folder Include="dataio\viewmodels" />
   </ItemGroup>
 </Project>
