@@ -9,4 +9,5 @@ public interface IDataIoService : INotifyPropertyChanged
     string ClientId { get; }
     Task Connect();
     Task Disconnect();
+    Task SendInput(string input);
 }

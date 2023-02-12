@@ -87,4 +87,9 @@ public class DataIoWebSocketService : IDataIoService
 
         await _socket.DisconnectAsync();
     }
+
+    public async Task SendInput(string input)
+    {
+        await _socket.EmitAsync("application1-input", input);
+    }
 }

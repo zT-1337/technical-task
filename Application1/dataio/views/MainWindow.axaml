@@ -9,8 +9,8 @@
                 <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
                         <TextBlock Text="{Binding DataIoService.ClientId, Mode=OneWay}"/>
                         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                                <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0"/>
-                                <Button Content="Send" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding DataIoService.IsConnectionInitialized}"/>
+                                <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0" Text="{Binding InputField}"/>
+                                <Button Content="Send" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding DataIoService.IsConnectionInitialized}" Command="{Binding SendInputField}"/>
                         </Grid>
                         <StackPanel Spacing="10">
                                 <TextBlock Text="Inputs send:"/>
