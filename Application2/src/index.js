@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import {Server} from "socket.io";
-import { getNextId } from "./id.js";
+import {getNextId} from "./id.js";
 
 const app = express();
 const port = 3000;
