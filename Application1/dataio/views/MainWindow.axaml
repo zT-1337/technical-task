@@ -5,12 +5,12 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Application1.dataio.views.MainWindow"
         Title="Application1">
-        <Grid ColumnDefinitions="1*, 1*" RowDefinitions="Auto" Margin="5">
+        <Grid ColumnDefinitions="1*, 1*" RowDefinitions="1*, Auto" Margin="5">
                 <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="{Binding ClientId}"/>
+                        <TextBlock Text="{Binding DataIoService.ClientId, Mode=OneWay}"/>
                         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
                                 <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0"/>
-                                <Button Content="Send" Grid.Row="0" Grid.Column="1"/>
+                                <Button Content="Send" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding DataIoService.IsConnectionInitialized}"/>
                         </Grid>
                         <StackPanel Spacing="10">
                                 <TextBlock Text="Inputs send:"/>
@@ -20,6 +20,10 @@
                 <StackPanel Grid.Row="0" Grid.Column="1" Spacing="10">
                         <TextBlock Text="Outputs Received:"/>
                         <ListBox />
+                </StackPanel>
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                        <Button Content="Connect" Command="{Binding DataIoService.Connect}" IsEnabled="{Binding !DataIoService.IsConnectionInitialized}"/>
+                        <Button Content="Disconnect" Command="{Binding DataIoService.Disconnect}" IsEnabled="{Binding DataIoService.IsConnectionInitialized}"/>
                 </StackPanel>
         </Grid>
 </Window>
