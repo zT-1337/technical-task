@@ -1,21 +1,21 @@
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Application1.dataio.services;
 
 namespace Application1.dataio.viewmodels;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
-    public static MainWindowViewModel buildWithWebSocketService()
+    public static MainWindowViewModel BuildWithWebSocketService()
     {
         return new MainWindowViewModel(new DataIoWebSocketService("http://localhost:3000/"));
     }
 
     private string _inputField;
-    
-    public MainWindowViewModel(IDataIoService dataIOService)
+
+    private MainWindowViewModel(IDataIoService dataIoService)
     {
-        DataIoService = dataIOService;
+        DataIoService = dataIoService;
+        _inputField = "";
     }
 
     public IDataIoService DataIoService { get; }
@@ -26,13 +26,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _inputField = value;
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(InputField)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputField)));
         }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public async Task SendInputField()
+    public async void SendInputField()
     {
         await DataIoService.SendInput(InputField);
         InputField = "";

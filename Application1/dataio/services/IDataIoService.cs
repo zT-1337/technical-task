@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ public interface IDataIoService : INotifyPropertyChanged
 {
     bool IsConnectionInitialized { get; }
     string ClientId { get; }
+    ObservableCollection<string> SuccessfullySentInputs { get; }
     Task Connect();
     Task Disconnect();
     Task SendInput(string input);

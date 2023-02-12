@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using SocketIOClient;
@@ -15,6 +16,7 @@ public class DataIoWebSocketService : IDataIoService
     {
         _isConnectionInitialized = false;
         _clientId = "";
+        SuccessfullySentInputs = new ObservableCollection<string>();
         _socket = new SocketIO(url);
         SetupSocketEventHandler();
     }
@@ -65,6 +67,8 @@ public class DataIoWebSocketService : IDataIoService
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ClientId)));
         }
     }
+    
+    public ObservableCollection<string> SuccessfullySentInputs { get; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     
@@ -91,5 +95,6 @@ public class DataIoWebSocketService : IDataIoService
     public async Task SendInput(string input)
     {
         await _socket.EmitAsync("application1-input", input);
+        SuccessfullySentInputs.Add(input);
     }
 }

@@ -2,22 +2,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodels="clr-namespace:Application1.dataio.viewmodels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Application1.dataio.views.MainWindow"
-        Title="Application1"
-        x:DataType="viewmodels:MainWindowViewModel"
-        x:CompileBindings="True">
+        Title="Application1">
         <Grid ColumnDefinitions="1*, 1*" RowDefinitions="1*, Auto" Margin="5">
                 <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
                         <TextBlock Text="{Binding DataIoService.ClientId, Mode=OneWay}"/>
                         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                                <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0" Text="{Binding InputField}"/>
+                                <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0" Text="{Binding InputField}" IsEnabled="{Binding DataIoService.IsConnectionInitialized}"/>
                                 <Button Content="Send" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding DataIoService.IsConnectionInitialized}" Command="{Binding SendInputField}"/>
                         </Grid>
                         <StackPanel Spacing="10">
                                 <TextBlock Text="Inputs send:"/>
-                                <ListBox />
+                                <ListBox Items="{Binding DataIoService.SuccessfullySentInputs}">
+                                        <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                        <TextBlock Text="{Binding}"/>
+                                                </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                </ListBox>
                         </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Row="0" Grid.Column="1" Spacing="10">
