@@ -10,7 +10,7 @@ const httpServer = http.createServer(app);
 const websocketServer = new Server(httpServer);
 
 websocketServer.on("connection", socket => {
-  socket.emit("id", getNextId());
+  socket.emit("id", getNextId().toString());
 })
 
 httpServer.listen(port, () => {
