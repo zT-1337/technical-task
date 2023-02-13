@@ -5,6 +5,8 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
+    "clean": "rm -R ./public; cd frontend; npm run clean",
+    "build": "npm run clean; cd frontend; npm run build; cd ..; mkdir -p public; cp -r ./frontend/dist/* ./public/.",
     "start": "node ./src/index.js"
   },
   "author": "",

@@ -6,6 +6,8 @@ import {getNextId} from "./id.js";
 const app = express();
 const port = 3000;
 
+app.use(express.static("public"));
+
 const httpServer = http.createServer(app);
 const websocketServer = new Server(httpServer);
 
