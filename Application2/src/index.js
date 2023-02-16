@@ -1,7 +1,11 @@
+import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import {Server} from "socket.io";
-import {getNextId} from "./id.js";
+import {addNewApplication1Client, removeClient} from "./client-service.js";
+import {APPLICATION_1_JOIN, APPLICATION_TYPE_1, CLIENT_JOIN_SUCCESS} from "./constants.js";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -12,20 +16,18 @@ const httpServer = http.createServer(app);
 const websocketServer = new Server(httpServer);
 
 websocketServer.on("connection", socket => {
-  console.log("User connected");
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+  socket.on(APPLICATION_1_JOIN, () => {
+    const client = addNewApplication1Client();
+    socket.clientId = client.clientId;
+    socket.emit(CLIENT_JOIN_SUCCESS, client);
   });
 
-  socket.on("application1-input", message => {
-    console.log(message);
-  })
-
-  socket.emit("id", getNextId().toString());
-})
-
+  socket.on("disconnect", () => {
+    removeClient(socket.clientId);
+  });
+});
 
 httpServer.listen(port, () => {
   console.log(`Application2 listening on port ${port}`)
-})
+});

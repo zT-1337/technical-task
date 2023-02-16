@@ -1,16 +1,23 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Application1.dataio.dtos;
 using SocketIOClient;
 
 namespace Application1.dataio.services;
 
 public class DataIoWebSocketService : IDataIoService
 {
+    private const string JoinMessage = "application1-join";
+    private const string JoinSuccess = "client-join-success";
+
     private readonly SocketIO _socket;
     private bool _isConnectionInitialized;
     private string _clientId;
+    private string _authToken;
 
     public DataIoWebSocketService(string url)
     {
@@ -40,10 +47,19 @@ public class DataIoWebSocketService : IDataIoService
             Console.WriteLine(eventArgs);
         };
             
-        _socket.On("id", response =>
+        _socket.On(JoinSuccess, async response =>
         {
             Console.WriteLine("[Socket IO] Id received");
-            ClientId = $"Client Id: {response.GetValue<string>()}";
+            var joinData = response.GetValue<JoinSuccessDto>();
+            if (joinData.ClientId == null || joinData.Auth == null)
+            {
+                Console.WriteLine("[Application1] missing client id or auth");
+                await _socket.DisconnectAsync();
+                return;
+            }
+            
+            ClientId = $"Client Id: {joinData.ClientId}";
+            _authToken = joinData.Auth;
             IsConnectionInitialized = true;
         });
     }
@@ -80,6 +96,7 @@ public class DataIoWebSocketService : IDataIoService
         }
         
         await _socket.ConnectAsync();
+        await _socket.EmitAsync(JoinMessage);
     }
 
     public async Task Disconnect()
