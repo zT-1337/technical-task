@@ -6,7 +6,7 @@ function Input({
   sentInputs
 }) {
   return (
-    <div className="mr-8">
+    <div className="p-4" >
       <div className="flex mb-2">
         <input 
           className="input w-full rounded-none" 
@@ -29,7 +29,11 @@ function Input({
       <div>
         <p>Input send:</p>
         <ul>
-          {sentInputs.map(sentInput => <li key={sentInput.date}>{sentInput.input}</li>)}
+          {sentInputs.map(sentInput => 
+            <li className="break-words" key={sentInput.date}>
+              {sentInput.input}
+            </li>
+          )}
         </ul>
       </div>
     </div>

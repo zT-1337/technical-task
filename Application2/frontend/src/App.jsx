@@ -70,7 +70,7 @@ function App() {
   }
 
   return (
-    <div className="container mx-auto p-4 bg-base-200 h-screen flex flex-col">
+    <div className="container mx-auto p-4 bg-base-200 h-fit-content min-h-screen flex flex-col">
       <div className="mb-2 flex flex-row justify-center items-center">
         <p className="mr-2">{clientId}</p>
         <input 
@@ -86,7 +86,7 @@ function App() {
           }}/>
       </div>
       <div className="flex flex-row flex-1">
-        <div className="flex-1">
+        <div className="w-1/2">
           <Input 
             input={input} 
             onInputChange={setInput}
@@ -94,7 +94,7 @@ function App() {
             isConnected={isConnected}
             sentInputs={sentInputs}/>
         </div>
-        <div className="flex-1">
+        <div className="w-1/2">
           <Output receivedOutputs={receivedOutputs}/>
         </div>
       </div>
