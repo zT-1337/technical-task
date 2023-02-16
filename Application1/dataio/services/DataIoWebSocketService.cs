@@ -1,8 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Application1.dataio.dtos;
 using SocketIOClient;
@@ -122,6 +120,11 @@ public class DataIoWebSocketService : IDataIoService
 
     public async Task SendInput(string input)
     {
+        if (input.Length == 0)
+        {
+            return;
+        }
+        
         await _socket.EmitAsync(SendInputMessage, new InputMessageDto(input, _authToken));
         SentInputs.Add(input);
     }
