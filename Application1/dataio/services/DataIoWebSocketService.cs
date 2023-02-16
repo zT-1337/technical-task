@@ -30,9 +30,10 @@ public class DataIoWebSocketService : IDataIoService
 
     private void SetupSocketEventHandler()
     {
-        _socket.OnConnected += (_, _) =>
+        _socket.OnConnected += async (_, _) =>
         {
             Console.WriteLine("[Socket IO] Connected");
+            await _socket.EmitAsync(JoinMessage);
         };
 
         _socket.OnDisconnected += (_, _) =>
@@ -96,7 +97,6 @@ public class DataIoWebSocketService : IDataIoService
         }
         
         await _socket.ConnectAsync();
-        await _socket.EmitAsync(JoinMessage);
     }
 
     public async Task Disconnect()
