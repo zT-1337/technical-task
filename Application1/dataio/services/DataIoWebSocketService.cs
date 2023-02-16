@@ -23,6 +23,7 @@ public class DataIoWebSocketService : IDataIoService
     {
         _isConnectionInitialized = false;
         _clientId = "";
+        _authToken = "";
         SuccessfullySentInputs = new ObservableCollection<string>();
         _socket = new SocketIO(url);
         SetupSocketEventHandler();
@@ -111,7 +112,7 @@ public class DataIoWebSocketService : IDataIoService
 
     public async Task SendInput(string input)
     {
-        await _socket.EmitAsync("application1-input", input);
+        await _socket.EmitAsync("application1-input", new InputMessageDto(input, _authToken));
         SuccessfullySentInputs.Add(input);
     }
 }

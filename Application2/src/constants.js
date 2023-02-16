@@ -4,6 +4,9 @@ export const APPLICATION_2_JOIN = "application2-join";
 export const CLIENT_JOIN_SUCCESS = "client-join-success";
 export const CLIENT_JOIN_ERROR = "client-join-error";
 
+export const APPLICATION_1_INPUT = "application1-input";
+export const APPLICATION_2_OUTPUT = "application2-output";
+
 //APPLICATION TYPES
 export const APPLICATION_TYPE_1 = "application1";
 export const APPLICATION_TYPE_2 = "application2";

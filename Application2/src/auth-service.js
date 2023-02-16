@@ -7,3 +7,12 @@ export function createJWT(payload) {
 export function isValidApiKey(apiKey) {
   return apiKey === process.env.API_KEY;
 }
+
+export function isInputAuthorized(token, allowedType) {
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    return payload.type = allowedType;
+  } catch (error) {
+    return false;
+  }
+}
