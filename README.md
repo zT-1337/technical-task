@@ -60,21 +60,13 @@
 | active-clients-success | Array (clientId: string)          | Sending an array of all currently active clients                      |
 | active-clients-error   | error: string                     | Requesting all active clients failed, sending the reason for it       |
 
-# Implementation Details
-
-## Client Id
+# Client Id
 
 - Each Client gets a client id assigned upon joining
 - The client id is a string consisting of two componentes seperated by a '-'
 	- The first component is the current timestamp in millisecons since the epoch
 	- The second component are randomly generated 32 bits as a hexstring
 	- Example: 1676540597453-f836588b
-
-## Applications
-
-### Application 1
-
-### Application 2
 
 # How to Run
 
