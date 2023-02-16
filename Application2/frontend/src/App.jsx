@@ -2,14 +2,19 @@ import Input from "./Input.jsx";
 import Output from "./Output.jsx";
 import io from "socket.io-client";
 import {useState} from "react";
-import { APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
+import { APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
 
 let socket;
 
 function App() {
   const [apiKey, setApiKey] = useState("");
+
   const [clientId, setClientId] = useState("NOT CONNECTED");
+  const [auth, setAuth] = useState("");
   const [isConnected, setIsConnected] = useState(false);
+
+  const [input, setInput] = useState("");
+  const [sentInputs, setSentInputs] = useState([]);
 
   const onConnectPressed = () => {
     socket = io("http://localhost:3000");
@@ -22,10 +27,12 @@ function App() {
       console.log("[Socket.IO] disconnected");
       setIsConnected(false);
       setClientId("NOT CONNECTED");
+      setAuth("");
 
       socket.off("connect");
       socket.off("disconnect");
       socket.off(CLIENT_JOIN_SUCCESS);
+      socket.off(CLIENT_JOIN_ERROR);
       socket = undefined;
     })
 
@@ -33,15 +40,22 @@ function App() {
       console.log(joinMessage);
       setIsConnected(true);
       setClientId(`Client Id: ${joinMessage.clientId}`);
+      setAuth(joinMessage.auth);
     });
 
     socket.on(CLIENT_JOIN_ERROR, errorMessage => {
-      console.log(errorMessage);
+      alert(errorMessage.error);
     });
   }
 
   const onDisconnectPressed = () => {
     socket.disconnect();
+  }
+
+  const onSendPressed = () => {
+    socket.emit(APPLICATION_2_INPUT, {input, auth});
+    setSentInputs([...sentInputs, {input, date: Date.now()}]);
+    setInput("");
   }
 
   return (
@@ -57,7 +71,12 @@ function App() {
       </div>
       <div className="flex flex-row flex-1">
         <div className="flex-1">
-          <Input />
+          <Input 
+            input={input} 
+            onInputChange={setInput}
+            onSendPressed={onSendPressed}
+            isConnected={isConnected}
+            sentInputs={sentInputs}/>
         </div>
         <div className="flex-1">
           <Output/>

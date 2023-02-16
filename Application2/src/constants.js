@@ -7,6 +7,9 @@ export const CLIENT_JOIN_ERROR = "client-join-error";
 export const APPLICATION_1_INPUT = "application1-input";
 export const APPLICATION_2_OUTPUT = "application2-output";
 
+export const APPLICATION_2_INPUT = "application2-input";
+export const APPLICATION_1_OUTPUT = "application1-output";
+
 //APPLICATION TYPES
 export const APPLICATION_TYPE_1 = "application1";
 export const APPLICATION_TYPE_2 = "application2";

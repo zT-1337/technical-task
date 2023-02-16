@@ -4,7 +4,18 @@ import http from "http";
 import { Server } from "socket.io";
 import { isInputAuthorized } from "./auth-service.js";
 import { addNewApplication1Client, addNewApplication2Client, removeClient } from "./client-service.js";
-import { APPLICATION_1_INPUT, APPLICATION_1_JOIN, APPLICATION_2_JOIN, APPLICATION_2_OUTPUT, APPLICATION_TYPE_1, APPLICATION_TYPE_2, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
+import { 
+  APPLICATION_1_INPUT, 
+  APPLICATION_2_OUTPUT, 
+  APPLICATION_2_INPUT,
+  APPLICATION_1_OUTPUT,
+  APPLICATION_1_JOIN, 
+  APPLICATION_2_JOIN, 
+  APPLICATION_TYPE_1, 
+  APPLICATION_TYPE_2, 
+  CLIENT_JOIN_ERROR, 
+  CLIENT_JOIN_SUCCESS 
+} from "./constants.js";
 
 dotenv.config();
 
@@ -49,6 +60,19 @@ websocketServer.on("connection", socket => {
     socket.join(APPLICATION_TYPE_2);
     socket.clientId = result.clientId;
     socket.emit(CLIENT_JOIN_SUCCESS, result);
+  });
+
+  socket.on(APPLICATION_2_INPUT, message => {
+    if(!message || !isInputAuthorized(message.auth, APPLICATION_TYPE_2)) {
+      console.log(`[${APPLICATION_TYPE_2}] failed to authorize`);
+      return;
+    }
+
+    console.log(`[${APPLICATION_TYPE_2}] sent input ${message.input}`);
+    websocketServer.in(APPLICATION_TYPE_1).emit(
+      APPLICATION_1_OUTPUT, 
+      {output: message.input, senderId: socket.clientId}
+    );
   });
 
   socket.on("disconnect", () => {
