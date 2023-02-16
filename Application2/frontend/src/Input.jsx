@@ -24,7 +24,7 @@ function Input({
       <div>
         <p>Input send:</p>
         <ul>
-          {sentInputs.map(sentInput => <p key={sentInput.date}>{sentInput.input}</p>)}
+          {sentInputs.map(sentInput => <li key={sentInput.date}>{sentInput.input}</li>)}
         </ul>
       </div>
     </div>

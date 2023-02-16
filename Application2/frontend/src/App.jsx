@@ -2,7 +2,7 @@ import Input from "./Input.jsx";
 import Output from "./Output.jsx";
 import io from "socket.io-client";
 import {useState} from "react";
-import { APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
+import { APPLICATION_2_OUTPUT, APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
 
 let socket;
 
@@ -15,6 +15,8 @@ function App() {
 
   const [input, setInput] = useState("");
   const [sentInputs, setSentInputs] = useState([]);
+
+  const [receivedOutputs, setReceivedOutputs] = useState([]);
 
   const onConnectPressed = () => {
     socket = io("http://localhost:3000");
@@ -45,6 +47,11 @@ function App() {
 
     socket.on(CLIENT_JOIN_ERROR, errorMessage => {
       alert(errorMessage.error);
+    });
+
+    socket.on(APPLICATION_2_OUTPUT, outputMessage => {
+      console.log(outputMessage);
+      setReceivedOutputs(receivedOutputs => [...receivedOutputs, {...outputMessage, date: Date.now()}]);
     });
   }
 
@@ -79,7 +86,7 @@ function App() {
             sentInputs={sentInputs}/>
         </div>
         <div className="flex-1">
-          <Output/>
+          <Output receivedOutputs={receivedOutputs}/>
         </div>
       </div>
       <div className="flex flex-row justify-end">
