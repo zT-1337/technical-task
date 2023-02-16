@@ -13,9 +13,14 @@ function Input({
           type="text" 
           placeholder="Input for Application1"
           value={input}
-          onChange={event => onInputChange(event.target.value)}/>
+          onChange={event => onInputChange(event.target.value)}
+          onKeyDown={event => {
+            if(event.key === "Enter" && input.length > 0) {
+              onSendPressed();
+            }
+          }}/>
         <button 
-          className={`btn-primary btn-md ${!isConnected ? "btn-disabled" : ""}`} 
+          className={`btn-primary btn-md ${!isConnected || input.length === 0 ? "btn-disabled" : ""}`} 
           disabled={!isConnected}
           onClick={onSendPressed}>
             Send

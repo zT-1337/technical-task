@@ -60,6 +60,10 @@ function App() {
   }
 
   const onSendPressed = () => {
+    if(input.length === 0) {
+      return;
+    }
+
     socket.emit(APPLICATION_2_INPUT, {input, auth});
     setSentInputs([...sentInputs, {input, date: Date.now()}]);
     setInput("");
@@ -74,7 +78,12 @@ function App() {
           type="password" 
           placeholder="API Key" 
           value={apiKey}
-          onChange={event => setApiKey(event.target.value)}/>
+          onChange={event => setApiKey(event.target.value)}
+          onKeyDown={event => {
+            if(event.key === "Enter" && apiKey.length > 0) {
+              onConnectPressed();
+            }
+          }}/>
       </div>
       <div className="flex flex-row flex-1">
         <div className="flex-1">
