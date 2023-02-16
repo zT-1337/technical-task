@@ -11,8 +11,10 @@ public class InputMessageDto
     }
 
     [JsonPropertyName("input")]
+    // ReSharper disable once MemberCanBePrivate.Global
     public string Input { get; }
     
     [JsonPropertyName("auth")]
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string Auth { get; }
 }

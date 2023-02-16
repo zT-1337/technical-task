@@ -7,17 +7,17 @@
         Title="Application1">
         <Grid ColumnDefinitions="1*, 1*" RowDefinitions="1*, Auto" Margin="5">
                 <StackPanel Spacing="10" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="{Binding DataIoService.ClientId, Mode=OneWay}"/>
+                        <TextBlock Text="{Binding DataIoService.ClientId, Mode=OneWay}" TextWrapping="Wrap"/>
                         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
                                 <TextBox Watermark="Input for Application2" Grid.Row="0" Grid.Column="0" Text="{Binding InputField}" IsEnabled="{Binding DataIoService.IsConnectionInitialized}"/>
                                 <Button Content="Send" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding DataIoService.IsConnectionInitialized}" Command="{Binding SendInputField}"/>
                         </Grid>
                         <StackPanel Spacing="10">
                                 <TextBlock Text="Inputs send:"/>
-                                <ListBox Items="{Binding DataIoService.SuccessfullySentInputs}">
+                                <ListBox Items="{Binding DataIoService.SentInputs}">
                                         <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                        <TextBlock Text="{Binding}"/>
+                                                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
                                                 </DataTemplate>
                                         </ListBox.ItemTemplate>
                                 </ListBox>
@@ -25,7 +25,13 @@
                 </StackPanel>
                 <StackPanel Grid.Row="0" Grid.Column="1" Spacing="10">
                         <TextBlock Text="Outputs Received:"/>
-                        <ListBox />
+                        <ListBox Items="{Binding DataIoService.ReceivedOutputs}">
+                                <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                </ListBox.ItemTemplate>
+                        </ListBox>
                 </StackPanel>
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
                         <Button Content="Connect" Command="{Binding DataIoService.Connect}" IsEnabled="{Binding !DataIoService.IsConnectionInitialized}"/>

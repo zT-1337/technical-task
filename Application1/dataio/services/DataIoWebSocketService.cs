@@ -12,7 +12,9 @@ namespace Application1.dataio.services;
 public class DataIoWebSocketService : IDataIoService
 {
     private const string JoinMessage = "application1-join";
-    private const string JoinSuccess = "client-join-success";
+    private const string JoinSuccessMessage = "client-join-success";
+    private const string SendInputMessage = "application1-input";
+    private const string ReceivedOutputMessage = "application1-output";
 
     private readonly SocketIO _socket;
     private bool _isConnectionInitialized;
@@ -24,7 +26,8 @@ public class DataIoWebSocketService : IDataIoService
         _isConnectionInitialized = false;
         _clientId = "";
         _authToken = "";
-        SuccessfullySentInputs = new ObservableCollection<string>();
+        SentInputs = new ObservableCollection<string>();
+        ReceivedOutputs = new ObservableCollection<OutputMessageDto>();
         _socket = new SocketIO(url);
         SetupSocketEventHandler();
     }
@@ -49,7 +52,7 @@ public class DataIoWebSocketService : IDataIoService
             Console.WriteLine(eventArgs);
         };
             
-        _socket.On(JoinSuccess, async response =>
+        _socket.On(JoinSuccessMessage, async response =>
         {
             Console.WriteLine("[Socket IO] Id received");
             var joinData = response.GetValue<JoinSuccessDto>();
@@ -63,6 +66,12 @@ public class DataIoWebSocketService : IDataIoService
             ClientId = $"Client Id: {joinData.ClientId}";
             _authToken = joinData.Auth;
             IsConnectionInitialized = true;
+        });
+        
+        _socket.On(ReceivedOutputMessage, response =>
+        {
+            Console.WriteLine("[Socket.IO] Output received");
+            ReceivedOutputs.Add(response.GetValue<OutputMessageDto>());
         });
     }
 
@@ -86,7 +95,8 @@ public class DataIoWebSocketService : IDataIoService
         }
     }
     
-    public ObservableCollection<string> SuccessfullySentInputs { get; }
+    public ObservableCollection<string> SentInputs { get; }
+    public ObservableCollection<OutputMessageDto> ReceivedOutputs { get; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     
@@ -112,7 +122,7 @@ public class DataIoWebSocketService : IDataIoService
 
     public async Task SendInput(string input)
     {
-        await _socket.EmitAsync("application1-input", new InputMessageDto(input, _authToken));
-        SuccessfullySentInputs.Add(input);
+        await _socket.EmitAsync(SendInputMessage, new InputMessageDto(input, _authToken));
+        SentInputs.Add(input);
     }
 }
