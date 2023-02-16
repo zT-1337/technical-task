@@ -111,9 +111,3 @@ Application2 can also be run directly on the host as a node.js application.
     - Run the command 'npm run build'
     - Run the command 'npm run start', make sure the port 3000 is available on the host
     - The webapp should now be available under http://localhost:3000
-
-# User Manual
-
-## Application 1
-
-## Application 2
