@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 import express from "express";
 import http from "http";
-import {Server} from "socket.io";
-import {addNewApplication1Client, removeClient} from "./client-service.js";
-import {APPLICATION_1_JOIN, APPLICATION_TYPE_1, CLIENT_JOIN_SUCCESS} from "./constants.js";
+import { Server } from "socket.io";
+import { addNewApplication1Client, addNewApplication2Client, removeClient } from "./client-service.js";
+import { APPLICATION_1_JOIN, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
 
 dotenv.config();
 
@@ -23,8 +23,22 @@ websocketServer.on("connection", socket => {
     socket.emit(CLIENT_JOIN_SUCCESS, client);
   });
 
+  socket.on(APPLICATION_2_JOIN, credentials => {
+    const result = addNewApplication2Client(credentials);
+    if(typeof result === 'string') {
+      socket.emit(CLIENT_JOIN_ERROR, {error: result});
+      socket.disconnect();
+      return;
+    }
+    
+    socket.clientId = result.clientId;
+    socket.emit(CLIENT_JOIN_SUCCESS, result);
+  });
+
   socket.on("disconnect", () => {
-    removeClient(socket.clientId);
+    if(socket.clientId !== undefined) {
+      removeClient(socket.clientId);
+    }
   });
 });
 
