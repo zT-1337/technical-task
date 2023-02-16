@@ -72,4 +72,48 @@
 
 ## Application 1
 
+- Requierments:
+    - .net SDK Version 6
+- How to run:
+    - Navigate into the Application1 folder
+    - Run 'dotnet run'
+    - A windows application window should now be open
+
+## Application 2
+
+### Docker
+
+Application2 provides a Dockerfile that can be used to run it inside of a container.
+
+- Requierements:
+    - Docker engine needs to be installed on the host system
+- How to run:
+    - Navigate to the folder Application2
+    - Create a .env file for the application settings, the .sample.env file can be used as an example
+    - Build the image first e.g.: 'docker build -t application2'
+    - Run the image and map the container port 3000 to any available host port e.g.: 'docker run -p3000:3000 application2'
+    - Using the example docker run command, the webapp should now be available under http://localhost:3000
+
+### On the host machine
+
+Application2 can also be run directly on the host as a node.js application.
+
+- Requierements:
+    - node.js version 18
+    - npm version 9
+- How to Run:
+    - Navigate to the folder Application2
+    - Create a .env file for the application settings, the .sample.env file can be used as an example
+    - Run the command 'npm install'
+    - Navigate to the folder frontend
+    - Run the command 'npm install'
+    - Navigate back to the previous folder
+    - Run the command 'npm run build'
+    - Run the command 'npm run start', make sure the port 3000 is available on the host
+    - The webapp should now be available under http://localhost:3000
+
+# User Manual
+
+## Application 1
+
 ## Application 2
