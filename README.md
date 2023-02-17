@@ -57,8 +57,8 @@
 | client-join-error      | error: string;                    | The reason why a client could not successfully join                   |
 | application1-output    | output: string; senderId: string; | Sending the Application 2 Input to the Application 1 client as output |
 | application2-output    | output: string; senderId: string; | Sending the Application 1 Input to the Application 2 client as output |
-| active-clients-success | Array (clientId: string)          | Sending an array of all currently active clients                      |
-| active-clients-error   | error: string                     | Requesting all active clients failed, sending the reason for it       |
+| list-active-clients-success | Array (clientId: string)          | Sending an array of all currently active clients                      |
+| list-active-clients-error   | error: string                     | Requesting all active clients failed, sending the reason for it       |
 
 # Client Id
 
