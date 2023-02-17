@@ -51,7 +51,10 @@ function App() {
       socket.off("disconnect");
       socket.off(CLIENT_JOIN_SUCCESS);
       socket.off(CLIENT_JOIN_ERROR);
+      socket.off(APPLICATION_2_OUTPUT);
       socket.off(LIST_ACTIVE_CLIENTS_SUCCESS);
+      socket.off(CLIENT_JOINED);
+      socket.off(CLIENT_DISCONNECTED);
       socket = undefined;
     })
 
