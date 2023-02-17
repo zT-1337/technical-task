@@ -20,3 +20,6 @@ export const APPLICATION_TYPE_2 = "application2";
 //ERROR REASONS
 export const INVALID_API_KEY = "invalid-api-key";
 export const ALREADY_ACTIVE_APPLICATION_2_CLIENT = "already-active-application2-client";
+export const INVALID_JWT = "invalid-jwt";
+export const UNAUTHORIZED_CLIENT_TYPE = "unauthorized-client-type";
+export const MISSING_JWT = "missing-jwt";
