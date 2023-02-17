@@ -11,7 +11,8 @@ import {
   LIST_ACTIVE_CLIENTS, 
   LIST_ACTIVE_CLIENTS_SUCCESS, 
   CLIENT_JOINED, 
-  CLIENT_DISCONNECTED 
+  CLIENT_DISCONNECTED, 
+  APPLICATION_2_INPUT_SINGLE_CLIENT
 } from "./constants.js";
 import ActiveClientList from "./ActiveClientList.jsx";
 
@@ -107,6 +108,14 @@ function App() {
     setInput("");
   }
 
+  const onSendToClientPressed = (input, clientId) => {
+    if(input.length === 0) {
+      return;
+    }
+
+    socket.emit(APPLICATION_2_INPUT_SINGLE_CLIENT, {clientId, input, auth});
+  }
+
   return (
     <div className="container mx-auto p-4 bg-base-200 h-fit-content min-h-screen flex flex-col">
       <div className="mb-2 flex flex-row justify-center items-center">
@@ -121,7 +130,8 @@ function App() {
             if(event.key === "Enter" && apiKey.length > 0) {
               onConnectPressed();
             }
-          }}/>
+          }}
+        />
       </div>
       <div className="flex flex-row flex-1">
         <div className="w-1/3">
@@ -136,18 +146,21 @@ function App() {
           <Output receivedOutputs={receivedOutputs}/>
         </div>
         <div className="w-1/3">
-          <ActiveClientList activeClients={activeClients} />
+          <ActiveClientList 
+            activeClients={activeClients} 
+            onSendToClientPressed={onSendToClientPressed}
+          />
         </div>
       </div>
       <div className="flex flex-row justify-end">
         <button 
-          className={`btn-primary btn-wide btn-md mr-8 ${isConnected ? "btn-disabled" : ""}`} 
+          className={`btn btn-primary btn-wide btn-md mr-8 ${isConnected ? "btn-disabled" : ""}`} 
           onClick={onConnectPressed}
           disabled={isConnected}>
             Connect
         </button>
         <button 
-          className={`btn-primary btn-wide btn-md ${!isConnected ? "btn-disabled" : ""}`}
+          className={`btn btn-primary btn-wide btn-md ${!isConnected ? "btn-disabled" : ""}`}
           onClick={onDisconnectPressed}
           disabled={!isConnected}>
             Disconnect

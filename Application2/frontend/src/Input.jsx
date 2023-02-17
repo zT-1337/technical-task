@@ -18,11 +18,13 @@ function Input({
             if(event.key === "Enter" && input.length > 0) {
               onSendPressed();
             }
-          }}/>
+          }}
+        />
         <button 
-          className={`btn-primary btn-md ${!isConnected || input.length === 0 ? "btn-disabled" : ""}`} 
-          disabled={!isConnected}
-          onClick={onSendPressed}>
+          className={`btn btn-primary btn-md ${!isConnected || input.length === 0 ? "btn-disabled" : ""}`} 
+          disabled={!isConnected || input.length === 0}
+          onClick={onSendPressed}
+        >
             Send
         </button>
       </div>
