@@ -71,7 +71,13 @@ websocketServer.on("connection", socket => {
 
       socket.join(APPLICATION_TYPE_2);
       socket.clientId = clientId;
-      socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
+      socket.emit(
+        CLIENT_JOIN_SUCCESS, 
+        {
+          clientId, 
+          auth: createJWT({clientId, type: APPLICATION_TYPE_2})
+        }
+      );
     } catch (error) {
       socket.emit(CLIENT_JOIN_ERROR, {error: error.message});
       socket.disconnect();
