@@ -1,35 +1,41 @@
-function Input({
-  input, 
-  onInputChange, 
-  onSendPressed, 
+import { useState } from "react";
+import EnterInput from "./inputs/EnterInput.jsx";
+
+function InputList({
+  onSendBroadcastPressed, 
   isConnected, 
-  sentInputs
 }) {
+  const [input, setInput] = useState("");
+  const [sentInputs, setSentInputs] = useState([]);
+
+  const doSending = () => {
+    onSendBroadcastPressed(input);
+    setSentInputs([...sentInputs, {input, date: Date.now()}]);
+    setInput("");
+  }
+
   return (
     <div className="p-4" >
       <div className="flex mb-2">
-        <input 
-          className="input w-full rounded-none" 
+        <EnterInput
+          styling={"w-full"}
           type="text" 
           placeholder="Input for Application1"
           value={input}
-          onChange={event => onInputChange(event.target.value)}
-          onKeyDown={event => {
-            if(event.key === "Enter" && input.length > 0) {
-              onSendPressed();
-            }
-          }}
+          onValueChange={setInput}
+          onEnter={doSending}
+          isDisabled={!isConnected}
         />
         <button 
           className={`btn btn-primary btn-md ${!isConnected || input.length === 0 ? "btn-disabled" : ""}`} 
           disabled={!isConnected || input.length === 0}
-          onClick={onSendPressed}
+          onClick={doSending}
         >
             Send
         </button>
       </div>
       <div>
-        <p>Input send:</p>
+        <p>Broadcast send:</p>
         <ul>
           {sentInputs.map(sentInput => 
             <li className="break-words" key={sentInput.date}>
@@ -42,4 +48,4 @@ function Input({
   )
 }
 
-export default Input;
+export default InputList;

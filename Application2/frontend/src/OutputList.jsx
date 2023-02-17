@@ -1,4 +1,4 @@
-function Output({receivedOutputs}) {
+function OutputList({receivedOutputs}) {
   return (
     <div className="p-4">
       <p>Output received:</p>
@@ -13,4 +13,4 @@ function Output({receivedOutputs}) {
   )
 }
 
-export default Output;
+export default OutputList;

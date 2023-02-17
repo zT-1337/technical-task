@@ -1,8 +1,14 @@
 import { useState } from "react";
+import EnterInput from "./inputs/EnterInput";
 
 function ActiveClient({activeClient, onSendToClientPressed}) {
   const [isOpen, setOpen] = useState(false);
   const [input, setInput] = useState("");
+
+  const doSend = () => {
+    onSendToClientPressed(input, activeClient);
+    setInput("");
+  }
 
   return (
     <div className="my-4">
@@ -11,28 +17,21 @@ function ActiveClient({activeClient, onSendToClientPressed}) {
       </button>
       {isOpen && 
         <div className="flex">
-          <input 
-            className="input w-full rounded-none" 
+          <EnterInput 
+            styling={"w-full"}
             type="text"
             placeholder={`Input for ${activeClient}`}
             value={input}
-            onChange={event => setInput(event.target.value)}
-            onKeyDown={event => {
-              if(event.key === "Enter" && input.length > 0) {
-                onSendToClientPressed(input, activeClient);
-                setInput("");
-              }
-            }}/>
-            <button
-              className={`btn btn-primary btn-md ${input.length === 0 ? "btn-disabled" : ""}`} 
-              disabled={input.length === 0}
-              onClick={() => {
-                onSendToClientPressed(input, activeClient);
-                setInput("");
-              }}
-            >
-              Send
-            </button>
+            onValueChange={setInput}
+            onEnter={doSend}
+          />
+          <button
+            className={`btn btn-primary btn-md ${input.length === 0 ? "btn-disabled" : ""}`} 
+            disabled={input.length === 0}
+            onClick={doSend}
+          >
+            Send
+          </button>
         </div>
       }
     </div>

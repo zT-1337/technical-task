@@ -1,5 +1,6 @@
-import Input from "./Input.jsx";
-import Output from "./Output.jsx";
+import InputList from "./InputList.jsx";
+import OutputList from "./OutputList.jsx";
+import EnterInput from "./inputs/EnterInput.jsx";
 import io from "socket.io-client";
 import {useState} from "react";
 import { 
@@ -25,14 +26,15 @@ function App() {
   const [auth, setAuth] = useState("");
   const [isConnected, setIsConnected] = useState(false);
 
-  const [input, setInput] = useState("");
-  const [sentInputs, setSentInputs] = useState([]);
-
   const [receivedOutputs, setReceivedOutputs] = useState([]);
 
   const [activeClients, setActiveClients] = useState([]);
 
   const onConnectPressed = () => {
+    if(isConnected) {
+      return;
+    }
+
     socket = io("http://localhost:3000");
     socket.on("connect", () => {
       console.log("[Socket.IO] connected");
@@ -44,7 +46,6 @@ function App() {
       setIsConnected(false);
       setClientId("NOT CONNECTED");
       setAuth("");
-      setSentInputs([]);
       setReceivedOutputs([]);
       setActiveClients([]);
 
@@ -98,14 +99,12 @@ function App() {
     socket.disconnect();
   }
 
-  const onSendPressed = () => {
+  const onSendBoradcastPressed = (input) => {
     if(input.length === 0) {
       return;
     }
 
     socket.emit(APPLICATION_2_INPUT_BROADCAST, {input, auth});
-    setSentInputs([...sentInputs, {input, date: Date.now()}]);
-    setInput("");
   }
 
   const onSendToClientPressed = (input, clientId) => {
@@ -120,30 +119,24 @@ function App() {
     <div className="container mx-auto p-4 bg-base-200 h-fit-content min-h-screen flex flex-col">
       <div className="mb-2 flex flex-row justify-center items-center">
         <p className="mr-2">{clientId}</p>
-        <input 
-          className="input flex-1 rounded-none"
-          type="password" 
+        <EnterInput 
+          styling={"flex-1"}
+          type="password"
           placeholder="API Key" 
           value={apiKey}
-          onChange={event => setApiKey(event.target.value)}
-          onKeyDown={event => {
-            if(event.key === "Enter" && apiKey.length > 0) {
-              onConnectPressed();
-            }
-          }}
+          onValueChange={setApiKey}
+          onEnter={onConnectPressed}
         />
       </div>
       <div className="flex flex-row flex-1">
         <div className="w-1/3">
-          <Input 
-            input={input} 
-            onInputChange={setInput}
-            onSendPressed={onSendPressed}
+          <InputList 
+            onSendBroadcastPressed={onSendBoradcastPressed}
             isConnected={isConnected}
-            sentInputs={sentInputs}/>
+          />
         </div>
         <div className="w-1/3">
-          <Output receivedOutputs={receivedOutputs}/>
+          <OutputList receivedOutputs={receivedOutputs}/>
         </div>
         <div className="w-1/3">
           <ActiveClientList 
