@@ -100,11 +100,6 @@ websocketServer.on("connection", socket => {
   });
 
   socket.on(LIST_ACTIVE_CLIENTS, message => {
-    if(!credentials || !isInputAuthorized(credentials.auth, APPLICATION_TYPE_2)) {
-      console.log(`[${APPLICATION_TYPE_2}] failed to authorize`);
-      return;
-    }
-
     try {
       tryToAuthorize(message, APPLICATION_TYPE_2);
       socket.emit(LIST_ACTIVE_CLIENTS_SUCCESS, listAllActiveApplication1Clients());
