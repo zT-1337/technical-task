@@ -26,6 +26,8 @@ import {
   CLIENT_JOIN_SUCCESS, 
   LIST_ACTIVE_CLIENTS,
   LIST_ACTIVE_CLIENTS_SUCCESS,
+  CLIENT_JOINED,
+  CLIENT_DISCONNECTED
 } from "./constants.js";
 
 dotenv.config();
@@ -46,6 +48,7 @@ websocketServer.on("connection", socket => {
     socket.join(APPLICATION_TYPE_1);
     socket.clientId = clientId;
     socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
+    websocketServer.in(APPLICATION_TYPE_2).emit(CLIENT_JOINED, clientId);
   });
 
   socket.on(APPLICATION_1_INPUT, message => {
@@ -112,6 +115,7 @@ websocketServer.on("connection", socket => {
   socket.on("disconnect", () => {
     if(socket.clientId !== undefined) {
       removeClient(socket.clientId);
+      websocketServer.to(APPLICATION_TYPE_2).emit(CLIENT_DISCONNECTED, socket.clientId);
     }
   });
 });

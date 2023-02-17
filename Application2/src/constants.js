@@ -12,6 +12,8 @@ export const APPLICATION_1_OUTPUT = "application1-output";
 
 export const LIST_ACTIVE_CLIENTS = "list-active-clients";
 export const LIST_ACTIVE_CLIENTS_SUCCESS = "list-active-clients-success";
+export const CLIENT_JOINED = "client-joined";
+export const CLIENT_DISCONNECTED = "client-disconnected";
 
 //APPLICATION TYPES
 export const APPLICATION_TYPE_1 = "application1";

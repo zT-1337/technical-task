@@ -2,7 +2,8 @@ import Input from "./Input.jsx";
 import Output from "./Output.jsx";
 import io from "socket.io-client";
 import {useState} from "react";
-import { APPLICATION_2_OUTPUT, APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS } from "./constants.js";
+import { APPLICATION_2_OUTPUT, APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS, LIST_ACTIVE_CLIENTS, LIST_ACTIVE_CLIENTS_SUCCESS, CLIENT_JOINED, CLIENT_DISCONNECTED } from "./constants.js";
+import ActiveClientList from "./ActiveClientList.jsx";
 
 let socket;
 
@@ -18,6 +19,8 @@ function App() {
 
   const [receivedOutputs, setReceivedOutputs] = useState([]);
 
+  const [activeClients, setActiveClients] = useState([]);
+
   const onConnectPressed = () => {
     socket = io("http://localhost:3000");
     socket.on("connect", () => {
@@ -30,11 +33,15 @@ function App() {
       setIsConnected(false);
       setClientId("NOT CONNECTED");
       setAuth("");
+      setSentInputs([]);
+      setReceivedOutputs([]);
+      setActiveClients([]);
 
       socket.off("connect");
       socket.off("disconnect");
       socket.off(CLIENT_JOIN_SUCCESS);
       socket.off(CLIENT_JOIN_ERROR);
+      socket.off(LIST_ACTIVE_CLIENTS_SUCCESS);
       socket = undefined;
     })
 
@@ -43,6 +50,7 @@ function App() {
       setIsConnected(true);
       setClientId(`Client Id: ${joinMessage.clientId}`);
       setAuth(joinMessage.auth);
+      socket.emit(LIST_ACTIVE_CLIENTS, {auth: joinMessage.auth});
     });
 
     socket.on(CLIENT_JOIN_ERROR, errorMessage => {
@@ -53,6 +61,23 @@ function App() {
       console.log(outputMessage);
       setReceivedOutputs(receivedOutputs => [...receivedOutputs, {...outputMessage, date: Date.now()}]);
     });
+
+    socket.on(LIST_ACTIVE_CLIENTS_SUCCESS, activeClientsMessage => {
+      console.log(activeClientsMessage);
+      setActiveClients(activeClientsMessage);
+    });
+
+    socket.on(CLIENT_JOINED, joinedClientMessage => {
+      console.log(joinedClientMessage);
+      setActiveClients(activeClients => [...activeClients, joinedClientMessage]);
+    });
+   
+    socket.on(CLIENT_DISCONNECTED, disconnectClientMessage => {
+      console.log(disconnectClientMessage);
+      setActiveClients(activeClients => activeClients.filter(
+        client => client !== disconnectClientMessage
+      ));
+    })
   }
 
   const onDisconnectPressed = () => {
@@ -86,7 +111,7 @@ function App() {
           }}/>
       </div>
       <div className="flex flex-row flex-1">
-        <div className="w-1/2">
+        <div className="w-1/3">
           <Input 
             input={input} 
             onInputChange={setInput}
@@ -94,8 +119,11 @@ function App() {
             isConnected={isConnected}
             sentInputs={sentInputs}/>
         </div>
-        <div className="w-1/2">
+        <div className="w-1/3">
           <Output receivedOutputs={receivedOutputs}/>
+        </div>
+        <div className="w-1/3">
+          <ActiveClientList activeClients={activeClients} />
         </div>
       </div>
       <div className="flex flex-row justify-end">

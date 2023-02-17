@@ -5,3 +5,8 @@ export const CLIENT_JOIN_ERROR = "client-join-error";
 
 export const APPLICATION_2_INPUT = "application2-input";
 export const APPLICATION_2_OUTPUT = "application2-output";
+
+export const LIST_ACTIVE_CLIENTS = "list-active-clients";
+export const LIST_ACTIVE_CLIENTS_SUCCESS = "list-active-clients-success";
+export const CLIENT_JOINED = "client-joined";
+export const CLIENT_DISCONNECTED = "client-disconnected";
