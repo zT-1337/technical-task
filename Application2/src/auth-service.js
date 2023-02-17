@@ -30,7 +30,7 @@ export function tryToAuthorize(messageWithToken, allowedClientType) {
 
   let payload;
   try {
-    payload = jwt.verify(messageWithToken, process.env.JWT_SECRET);
+    payload = jwt.verify(messageWithToken.auth, process.env.JWT_SECRET);
   } catch (error) {
     console.log(`[${allowedClientType}] sent invalid jwt`);
     throw new Error(INVALID_JWT);
