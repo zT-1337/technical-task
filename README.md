@@ -51,13 +51,15 @@
 ### Application 2 Backend Messages
 
 
-|Name                    | Parameters                        | Description                                                           |
-|------------------------|-----------------------------------|-----------------------------------------------------------------------|
-| client-join-success    | clientId: string; auth: JWT;      | Returning the clientId and JWT for the successfully joined client     |
-| client-join-error      | error: string;                    | The reason why a client could not successfully join                   |
-| application1-output    | output: string; senderId: string; | Sending the Application 2 Input to the Application 1 client as output |
-| application2-output    | output: string; senderId: string; | Sending the Application 1 Input to the Application 2 client as output |
-| list-active-clients-success | Array (clientId: string)          | Sending an array of all currently active clients                      |
+|Name                         | Parameters                        | Description                                                               |
+|-----------------------------|-----------------------------------|---------------------------------------------------------------------------|
+| client-join-success         | clientId: string; auth: JWT;      | Returning the clientId and JWT for the successfully joined client         |
+| client-join-error           | error: string;                    | The reason why a client could not successfully join                       |
+| application1-output         | output: string; senderId: string; | Sending the Application 2 Input to the Application 1 client as output     |
+| application2-output         | output: string; senderId: string; | Sending the Application 1 Input to the Application 2 client as output     |
+| list-active-clients-success | Array (clientId: string)          | Sending an array of all currently active clients                          |
+| client-joined               | clientId: string;                 | Sending the client id of a newly joined client to an Application 2 client |
+| client-disconnected         | clientId: string;                 | Sending the client id of a disconnected client to an Application 2 client |
 
 # Client Id
 
