@@ -10,6 +10,10 @@ export const APPLICATION_2_OUTPUT = "application2-output";
 export const APPLICATION_2_INPUT = "application2-input";
 export const APPLICATION_1_OUTPUT = "application1-output";
 
+export const LIST_ACTIVE_CLIENTS = "list-active-clients";
+export const LIST_ACTIVE_CLIENTS_SUCCESS = "list-active-clients-success";
+export const LIST_ACTIVE_CLIENTS_ERROR = "list-active-clients-error";
+
 //APPLICATION TYPES
 export const APPLICATION_TYPE_1 = "application1";
 export const APPLICATION_TYPE_2 = "application2";
