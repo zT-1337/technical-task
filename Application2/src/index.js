@@ -63,9 +63,9 @@ websocketServer.on("connection", socket => {
     }
   });
 
-  socket.on(APPLICATION_2_JOIN, apiKeyCredentials => {
+  socket.on(APPLICATION_2_JOIN, message => {
     try {
-      tryToAuthenticateWithApiKey(apiKeyCredentials);
+      tryToAuthenticateWithApiKey(message);
 
       const clientId = addNewApplication2Client();
 
