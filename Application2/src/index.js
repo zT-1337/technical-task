@@ -27,7 +27,8 @@ import {
   LIST_ACTIVE_CLIENTS,
   LIST_ACTIVE_CLIENTS_SUCCESS,
   CLIENT_JOINED,
-  CLIENT_DISCONNECTED
+  CLIENT_DISCONNECTED,
+  APPLICATION_2_INPUT_SINGLE_CLIENT
 } from "./constants.js";
 
 dotenv.config();
@@ -46,6 +47,7 @@ websocketServer.on("connection", socket => {
     const clientId = addNewApplication1Client();
 
     socket.join(APPLICATION_TYPE_1);
+    socket.join(clientId);
     socket.clientId = clientId;
     socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
     websocketServer.in(APPLICATION_TYPE_2).emit(CLIENT_JOINED, clientId);
@@ -97,6 +99,26 @@ websocketServer.on("connection", socket => {
         APPLICATION_1_OUTPUT, 
         {output: message.input, senderId: socket.clientId}
       );
+    } catch (error) {
+      return;
+    }
+  });
+
+  socket.on(APPLICATION_2_INPUT_SINGLE_CLIENT, message => {
+    try {
+      tryToAuthorize(message, APPLICATION_TYPE_2);
+
+      if(message.clientId === undefined) {
+        console.log(`[${APPLICATION_TYPE_2}] missing client id of message receiver`)
+        return;
+      }
+
+      console.log(`[${APPLICATION_TYPE_2}] sent input ${message.input}`);
+      websocketServer.in(message.clientId).emit(
+        APPLICATION_1_OUTPUT, 
+        {output: message.input, senderId: socket.clientId}
+      );
+
     } catch (error) {
       return;
     }
