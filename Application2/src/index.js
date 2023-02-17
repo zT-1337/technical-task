@@ -39,6 +39,7 @@ websocketServer.on("connection", socket => {
 
   socket.on(APPLICATION_1_JOIN, () => {
     const clientId = addNewApplication1Client();
+
     socket.join(APPLICATION_TYPE_1);
     socket.clientId = clientId;
     socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
@@ -66,6 +67,7 @@ websocketServer.on("connection", socket => {
 
     try {
       const clientId = addNewApplication2Client(apiKeyCredentials);
+
       socket.join(APPLICATION_TYPE_2);
       socket.clientId = clientId;
       socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
@@ -94,7 +96,6 @@ websocketServer.on("connection", socket => {
       return;
     }
 
-    console.log(`[${APPLICATION_TYPE_2}] asked for active ${APPLICATION_TYPE_1} client list`);
     socket.emit(LIST_ACTIVE_CLIENTS_SUCCESS, listAllActiveApplication1Clients());
   });
 
