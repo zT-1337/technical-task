@@ -26,8 +26,8 @@ function App() {
   const [auth, setAuth] = useState("");
   const [isConnected, setIsConnected] = useState(false);
 
+  const [sentInputs, setSentInputs] = useState([]);
   const [receivedOutputs, setReceivedOutputs] = useState([]);
-
   const [activeClients, setActiveClients] = useState([]);
 
   const onConnectPressed = () => {
@@ -46,6 +46,7 @@ function App() {
       setIsConnected(false);
       setClientId("NOT CONNECTED");
       setAuth("");
+      setSentInputs([]);
       setReceivedOutputs([]);
       setActiveClients([]);
 
@@ -105,6 +106,7 @@ function App() {
     }
 
     socket.emit(APPLICATION_2_INPUT_BROADCAST, {input, auth});
+    setSentInputs([...sentInputs, {input, date: Date.now()}])
   }
 
   const onSendToClientPressed = (input, clientId) => {
@@ -133,6 +135,7 @@ function App() {
           <InputList 
             onSendBroadcastPressed={onSendBoradcastPressed}
             isConnected={isConnected}
+            sentInputs={sentInputs}
           />
         </div>
         <div className="w-1/3">

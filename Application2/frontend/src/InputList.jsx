@@ -3,14 +3,13 @@ import EnterInput from "./inputs/EnterInput.jsx";
 
 function InputList({
   onSendBroadcastPressed, 
-  isConnected, 
+  isConnected,
+  sentInputs
 }) {
   const [input, setInput] = useState("");
-  const [sentInputs, setSentInputs] = useState([]);
 
   const doSending = () => {
     onSendBroadcastPressed(input);
-    setSentInputs([...sentInputs, {input, date: Date.now()}]);
     setInput("");
   }
 

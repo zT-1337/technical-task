@@ -43,6 +43,8 @@ public class DataIoWebSocketService : IDataIoService
             Console.WriteLine("[Socket IO] Disconnected");
             IsConnectionInitialized = false;
             ClientId = "";
+            SentInputs.Clear();
+            ReceivedOutputs.Clear();
         };
 
         _socket.OnError += (_, eventArgs) =>
