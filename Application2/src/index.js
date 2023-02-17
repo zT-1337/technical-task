@@ -2,8 +2,13 @@ import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import { isInputAuthorized } from "./auth-service.js";
-import { addNewApplication1Client, addNewApplication2Client, removeClient } from "./client-service.js";
+import { createJWT, isInputAuthorized, isValidApiKey } from "./auth-service.js";
+import { 
+  addNewApplication1Client,
+  addNewApplication2Client,
+  listAllActiveApplication1Clients,
+  removeClient
+} from "./client-service.js";
 import { 
   APPLICATION_1_INPUT, 
   APPLICATION_2_OUTPUT, 
@@ -14,7 +19,10 @@ import {
   APPLICATION_TYPE_1, 
   APPLICATION_TYPE_2, 
   CLIENT_JOIN_ERROR, 
-  CLIENT_JOIN_SUCCESS 
+  CLIENT_JOIN_SUCCESS, 
+  LIST_ACTIVE_CLIENTS,
+  LIST_ACTIVE_CLIENTS_SUCCESS,
+  INVALID_API_KEY
 } from "./constants.js";
 
 dotenv.config();
@@ -30,10 +38,10 @@ const websocketServer = new Server(httpServer);
 websocketServer.on("connection", socket => {
 
   socket.on(APPLICATION_1_JOIN, () => {
-    const client = addNewApplication1Client();
+    const clientId = addNewApplication1Client();
     socket.join(APPLICATION_TYPE_1);
-    socket.clientId = client.clientId;
-    socket.emit(CLIENT_JOIN_SUCCESS, client);
+    socket.clientId = clientId;
+    socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
   });
 
   socket.on(APPLICATION_1_INPUT, message => {
@@ -49,17 +57,22 @@ websocketServer.on("connection", socket => {
     );
   });
 
-  socket.on(APPLICATION_2_JOIN, credentials => {
-    const result = addNewApplication2Client(credentials);
-    if(typeof result === 'string') {
-      socket.emit(CLIENT_JOIN_ERROR, {error: result});
-      socket.disconnect();
+  socket.on(APPLICATION_2_JOIN, apiKeyCredentials => {
+    if(!apiKeyCredentials || !isValidApiKey(apiKeyCredentials.apiKey)) {
+      console.log(`[${APPLICATION_TYPE_2}] failed to authorize`);
+      socket.emit(CLIENT_JOIN_ERROR, {error: INVALID_API_KEY});
       return;
     }
-   
-    socket.join(APPLICATION_TYPE_2);
-    socket.clientId = result.clientId;
-    socket.emit(CLIENT_JOIN_SUCCESS, result);
+
+    try {
+      const clientId = addNewApplication2Client(apiKeyCredentials);
+      socket.join(APPLICATION_TYPE_2);
+      socket.clientId = clientId;
+      socket.emit(CLIENT_JOIN_SUCCESS, {clientId, auth: createJWT({clientId, type: APPLICATION_TYPE_1})});
+    } catch (error) {
+      socket.emit(CLIENT_JOIN_ERROR, {error: error.message});
+      socket.disconnect();
+    }
   });
 
   socket.on(APPLICATION_2_INPUT, message => {
@@ -73,6 +86,16 @@ websocketServer.on("connection", socket => {
       APPLICATION_1_OUTPUT, 
       {output: message.input, senderId: socket.clientId}
     );
+  });
+
+  socket.on(LIST_ACTIVE_CLIENTS, credentials => {
+    if(!credentials || !isInputAuthorized(credentials.auth, APPLICATION_TYPE_2)) {
+      console.log(`[${APPLICATION_TYPE_2}] failed to authorize`);
+      return;
+    }
+
+    console.log(`[${APPLICATION_TYPE_2}] asked for active ${APPLICATION_TYPE_1} client list`);
+    socket.emit(LIST_ACTIVE_CLIENTS_SUCCESS, listAllActiveApplication1Clients());
   });
 
   socket.on("disconnect", () => {
