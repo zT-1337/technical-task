@@ -4,7 +4,6 @@ import http from "http";
 import { Server } from "socket.io";
 import { 
   createJWT,
-  isInputAuthorized, 
   tryToAuthenticateWithApiKey, 
   tryToAuthorize
 } from "./auth-service.js";

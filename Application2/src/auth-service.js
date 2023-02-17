@@ -1,5 +1,11 @@
 import jwt from "jsonwebtoken";
-import { APPLICATION_TYPE_2, INVALID_API_KEY, INVALID_JWT, MISSING_JWT, UNAUTHORIZED_CLIENT_TYPE } from "./constants";
+import { 
+  APPLICATION_TYPE_2, 
+  INVALID_API_KEY, 
+  INVALID_JWT, 
+  MISSING_JWT, 
+  UNAUTHORIZED_CLIENT_TYPE 
+} from "./constants.js";
 
 export function createJWT(payload) {
   return jwt.sign(payload, process.env.JWT_SECRET);
