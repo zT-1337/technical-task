@@ -2,7 +2,17 @@ import Input from "./Input.jsx";
 import Output from "./Output.jsx";
 import io from "socket.io-client";
 import {useState} from "react";
-import { APPLICATION_2_OUTPUT, APPLICATION_2_INPUT, APPLICATION_2_JOIN, CLIENT_JOIN_ERROR, CLIENT_JOIN_SUCCESS, LIST_ACTIVE_CLIENTS, LIST_ACTIVE_CLIENTS_SUCCESS, CLIENT_JOINED, CLIENT_DISCONNECTED } from "./constants.js";
+import { 
+  APPLICATION_2_OUTPUT, 
+  APPLICATION_2_INPUT_BROADCAST, 
+  APPLICATION_2_JOIN, 
+  CLIENT_JOIN_ERROR, 
+  CLIENT_JOIN_SUCCESS, 
+  LIST_ACTIVE_CLIENTS, 
+  LIST_ACTIVE_CLIENTS_SUCCESS, 
+  CLIENT_JOINED, 
+  CLIENT_DISCONNECTED 
+} from "./constants.js";
 import ActiveClientList from "./ActiveClientList.jsx";
 
 let socket;
@@ -89,7 +99,7 @@ function App() {
       return;
     }
 
-    socket.emit(APPLICATION_2_INPUT, {input, auth});
+    socket.emit(APPLICATION_2_INPUT_BROADCAST, {input, auth});
     setSentInputs([...sentInputs, {input, date: Date.now()}]);
     setInput("");
   }

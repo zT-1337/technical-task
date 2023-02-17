@@ -16,7 +16,7 @@ import {
 import { 
   APPLICATION_1_INPUT, 
   APPLICATION_2_OUTPUT, 
-  APPLICATION_2_INPUT,
+  APPLICATION_2_INPUT_BROADCAST,
   APPLICATION_1_OUTPUT,
   APPLICATION_1_JOIN, 
   APPLICATION_2_JOIN, 
@@ -87,7 +87,7 @@ websocketServer.on("connection", socket => {
     }
   });
 
-  socket.on(APPLICATION_2_INPUT, message => {
+  socket.on(APPLICATION_2_INPUT_BROADCAST, message => {
     try {
       tryToAuthorize(message, APPLICATION_TYPE_2);
 

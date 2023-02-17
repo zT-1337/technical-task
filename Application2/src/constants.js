@@ -7,7 +7,7 @@ export const CLIENT_JOIN_ERROR = "client-join-error";
 export const APPLICATION_1_INPUT = "application1-input";
 export const APPLICATION_2_OUTPUT = "application2-output";
 
-export const APPLICATION_2_INPUT = "application2-input";
+export const APPLICATION_2_INPUT_BROADCAST = "application2-input-broadcast";
 export const APPLICATION_1_OUTPUT = "application1-output";
 
 export const LIST_ACTIVE_CLIENTS = "list-active-clients";
