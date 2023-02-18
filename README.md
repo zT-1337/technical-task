@@ -91,7 +91,7 @@ Application2 provides a Dockerfile that can be used to run it inside of a contai
 - How to run:
     - Navigate to the folder Application2
     - Create a .env file for the application settings, the .sample.env file can be used as an example
-    - Build the image first e.g.: 'docker build -t application2'
+    - Build the image first e.g.: 'docker build -t application2 .'
     - Run the image and map the container port 3000 to the host port 3000 e.g.: 'docker run -p3000:3000 application2', make sure the host port 3000 is available
     - The webapp should now be available under http://localhost:3000
 
